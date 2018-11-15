@@ -7,17 +7,17 @@ Writing your own theme via Sass is not difficult once you figure out how it work
 This tutorial uses Angular 7 and assumes that you're using at least Angular 6.  You can probably follow along with earlier versions of Angular if you haven't upgraded yet: YMMV.
 
 # 1 - Create Your App & Import PrimeNG
-First we have to handle the boring boilerplate of creating our example app and adding PrimeNG to it.  If you already have a working Angular app with PrimeNG added, then feel free to skip to the next step.
+First we have to handle the boring boilerplate of creating our example app and adding PrimeNG to it.  If you already have a working Angular app with PrimeNG added, then feel free to skip to step 3.
 
 First create your app with `ng new primeng-custom-theme-example`.  If you're using Angular CLI 7, it will prompt you about routing and stylesheets.  For the purpose of a small demo app it doesn't really matter, so I'm going to go with the defaults, including selecting CSS stylesheets (rather than SASS) in order to demonstrate the full process for the benefit of those who might not already have their app configured for SASS.
 
 Install PrimeNG with `npm i primeng primeicons --save`.  Add references to PrimeNG's primeicons.css, nova-light theme.css, and primeng.min.css within the 'styles' array in your Angular.json.  Adding the nova-light theme file is a temporary measure just so that the app displays properly until we replace it with our own theme stylesheet.
 ```json
 "styles": [
-  "node_modules/primeicons/primeicons.css",
-  "node_modules/primeng/resources/themes/nova-light/theme.css",
-  "node_modules/primeng/resources/primeng.min.css",
-  //...
+    "src/styles.css",
+    "node_modules/primeicons/primeicons.css",
+    "node_modules/primeng/resources/themes/nova-light/theme.css",
+    "node_modules/primeng/resources/primeng.min.css"
 ],
 ```
 
@@ -88,3 +88,8 @@ Primary and Secondary buttons) we'll default to 'success' because there is no as
 ```
 At this point we can observe these basic components with the included default nova-light theme:
 ![Free Theme Demo](https://raw.githubusercontent.com/pfbrowning/primeng-custom-theme-example/master/src/assets/media/free-theme-demo.gif)
+# 3 - Understanding The Structure Of The Bundled PrimeNG Free Theme
+At this point it's a good idea to look through the 'node_modules/primeng/resources/themes' folder to get a feel for how the deprecated free themes are arranged.  There's a folder for each theme, and while the contents vary from theme to theme, most of them contain a 'theme.scss' file.  If you take a look at those 'theme.scss' files, you'll see that they declare theme-specific SASS variables for things like colors, border widths, etc, for different component states (default, focus, highlight, error, etc).  Some include fonts and images, which are also referenced in the 'theme.scss' file.  At the end they import the '_theme.css' file at the root of the themes folder, which contains the global PrimeNG SASS rules.  That underscore is important: from here on we'll call the '_theme.css' the global SASS rule file and we'll refer to the theme-specific 'theme.scss' as the theme variables file.  We will be following the same pattern here: we'll be creating our own theme variable file, then importing the global PrimeNG SASS rules, then applying any rules of our own (which we will have to do).
+
+Note also the fact that, for all of the free themes except for Nova and Luna, as well as for the global PrimeNG SASS rule file, there's a comment at the beginning of the file stating that the theme is deprecated, and that we should use Nova instead.  The folders for the Nova and Luna themes contain the compiled css, rather than theme variables files to go along with the global rules.  From this we can infer that an actively maintained global rules file does exist somewhere (the Nova theme was presumably compiled with it), but it's no longer open source (presumably to encourage people to buy their premium themes).  We can live with the theme variable files being deprecated, but the fact that the global PrimeNG SASS rule file is deprecated is problematic for us.  This means that as PrimeNG implements new components and makes breaking changes to their CSS in the future, we will have to adapt accordingly by adding and modifying rules as necessary.  In my view, this is a tradeoff: the flexibility that I get from maintaining my own themes outweighs the inconvenience of having to add and modify the SASS occasionally.  If you agree with that tradeoff, then read on.
+# 4 - Creating Our Custom Theme
