@@ -87,6 +87,4 @@ Primary and Secondary buttons) we'll default to 'success' because there is no as
   }
 ```
 At this point we can observe these basic components with the included default nova-light theme:
-<video width="320" height="240">
-  <source src="https://raw.githubusercontent.com/pfbrowning/primeng-custom-theme-example/master/src/assets/media/free-theme-demo.mp4" type="video/mp4">
-</video>
+![Free Theme Demo](https://raw.githubusercontent.com/pfbrowning/primeng-custom-theme-example/master/src/assets/media/free-theme-demo.gif)
