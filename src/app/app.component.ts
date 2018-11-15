@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'primeng-custom-theme-example';
+  title = 'PrimeNG Custom Theme Example';
+  constructor(private messageService: MessageService) {}
+
+  public onClick(severity: string = 'success') {
+    this.messageService.add({severity:severity, summary:severity, detail:'You clicked a button!'});
+  }
 }
