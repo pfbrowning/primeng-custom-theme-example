@@ -92,4 +92,27 @@ At this point we can observe these basic components with the included default no
 At this point it's a good idea to look through the 'node_modules/primeng/resources/themes' folder to get a feel for how the deprecated free themes are arranged.  There's a folder for each theme, and while the contents vary from theme to theme, most of them contain a 'theme.scss' file.  If you take a look at those 'theme.scss' files, you'll see that they declare theme-specific SASS variables for things like colors, border widths, etc, for different component states (default, focus, highlight, error, etc).  Some include fonts and images, which are also referenced in the 'theme.scss' file.  At the end they import the '_theme.css' file at the root of the themes folder, which contains the global PrimeNG SASS rules.  That underscore is important: from here on we'll call the '_theme.css' the global SASS rule file and we'll refer to the theme-specific 'theme.scss' as the theme variables file.  We will be following the same pattern here: we'll be creating our own theme variable file, then importing the global PrimeNG SASS rules, then applying any rules of our own (which we will have to do).
 
 Note also the fact that, for all of the free themes except for Nova and Luna, as well as for the global PrimeNG SASS rule file, there's a comment at the beginning of the file stating that the theme is deprecated, and that we should use Nova instead.  The folders for the Nova and Luna themes contain the compiled css, rather than theme variables files to go along with the global rules.  From this we can infer that an actively maintained global rules file does exist somewhere (the Nova theme was presumably compiled with it), but it's no longer open source (presumably to encourage people to buy their premium themes).  We can live with the theme variable files being deprecated, but the fact that the global PrimeNG SASS rule file is deprecated is problematic for us.  This means that as PrimeNG implements new components and makes breaking changes to their CSS in the future, we will have to adapt accordingly by adding and modifying rules as necessary.  In my view, this is a tradeoff: the flexibility that I get from maintaining my own themes outweighs the inconvenience of having to add and modify the SASS occasionally.  If you agree with that tradeoff, then read on.
-# 4 - Creating Our Custom Theme
+# 4 - Importing A Free Theme To Modify
+Now that we understand the layout of the bundled, now-deprecated free themes, the path forward is clear: we'll just take one of the theme variable files, modify the variables to our liking, add any extra necessary rules, and compile it along with the global PrimeNG rules.  For the purposes of our demo I'm going to reuse one of the simpler free themes (one which references no external assets), but the process should be similar for any of the free themes as long as it contains a theme.scss file (rather than compiled css only, as with Nova and Luna).
+
+1. Create a new folder entitled 'primeng-theme' within 'src/assets'
+2. Copy the Cruze variables file ('cruze/theme.css') and the global PrimeNG rules file ('_theme.scss') within 'node_modules/primeng/resources/themes' to our new 'src/primeng-theme' folder.  To clarify the difference between the two, rename '_theme.scss' to 'primeng-rules.scss'.  Update the corresponding import at the bottom of "theme.css" accordingly so that it reads "@import './primeng-rules.scss';".
+3. Install the necessary dependencies: `npm i node-sass autoprefixer cssnano postcss postcss-cli --save-dev`.
+4. Add the following scripts to your "package.json":
+```json
+"premakecss": "node-sass src/primeng-theme/theme.scss -o src/primeng-theme/",
+"makecss": "postcss src/primeng-theme/theme.css --use autoprefixer -d src/primeng-theme/",
+"prebuild:css": "npm run makecss",
+"build:css": "postcss src/primeng-theme/theme.css --use cssnano > src/primeng-theme/theme.min.css"
+```
+5. Compile the css by running `npm run build:css`
+6. You should now see 'theme.css' and 'theme.min.css' in the theme folder.  Let's include the minified compiled styles by replacing the nova-light 'theme.css' with our newly compiled 'theme.min.css' in the styles array within Angular.json:
+```json
+"styles": [
+  "src/styles.css",
+  "src/primeng-theme/theme.min.css",
+  "node_modules/primeicons/primeicons.css",
+  "node_modules/primeng/resources/primeng.min.css"
+],
+```
+7. Now that we've got everything set up to modify and re-compile one of the free themes, let's boot up the app and see how it looks.
