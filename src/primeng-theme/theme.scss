@@ -1,7 +1,4 @@
-/*
-* Deprecated: Use nova instead
-*/
-
+/* This file declares the variables and rules for a custom theme. */
 $fontFamily: Segoe UI, Arial, sans-serif;
 $fontSize: 1em;
 $borderRadius: 3px;
@@ -9,37 +6,37 @@ $disabledOpacity: 0.35;
 
 //Header
 $headerBorderWidth: 1px;
-$headerBorderColor: #333333;
-$headerBgColor: #333333;
-$headerTextColor: #eeeeee;
+$headerBorderColor: #c8c8c8;
+$headerBgColor: #f4f4f4;
+$headerTextColor: #333;
 $headerFontWeight: bold;
 $headerIconTextColor: #eeeeee;
 
 //Content
 $contentBorderWidth: 1px;
-$contentBorderColor: #666666;
-$contentBgColor: #575757;
-$contentTextColor: #eeeeee;
+$contentBorderColor: #c8c8c8;
+$contentBgColor: #fff;
+$contentTextColor: #333;
 
 //Default State
 $stateDefaultBorderWidth: 1px;
-$stateDefaultBorderColor: #2e2e2e;
-$stateDefaultBgColor: #3d3d3d;
-$stateDefaultTextColor: #eeeeee;
+$stateDefaultBorderColor: #009cbd;
+$stateDefaultBgColor: #009cbd;
+$stateDefaultTextColor: #fff;
 
 //Active State
-$stateActiveBorderColor: #2e2e2e;
-$stateActiveBgColor: #0099e0;
+$stateActiveBorderColor: #343741;
+$stateActiveBgColor: #009cbd;
 $stateActiveTextColor: #ffffff;
 
 //Highlight State
 $stateHighlightBorderColor: #cccccc;
 $stateHighlightBgColor: #eeeeee;
-$stateHighlightTextColor: #0099e0;
+$stateHighlightTextColor: #009cbd;
 
 //Focus State
-$stateFocusBorderColor: #2e2e2e;
-$stateFocusBgColor: #474747;
+$stateFocusBorderColor: #343741;
+$stateFocusBgColor: #343741;
 $stateFocusTextColor: #ffffff;
 
 //Error State
@@ -48,8 +45,8 @@ $stateErrorBgColor: #ffc73d;
 $stateErrorTextColor: #111111;
 
 //Hover State
-$stateHoverBorderColor: #2e2e2e;
-$stateHoverBgColor: #474747;
+$stateHoverBorderColor: #343741;
+$stateHoverBgColor: #343741;
 $stateHoverTextColor: #ffffff;
 
 //Forms
@@ -58,4 +55,116 @@ $inputTextColor: #222222;
 $invalidInputBorderColor: #ffb73d;
 $inputGroupTextColor: #ffffff;
 
+//Toaster
+$toasterTextColor: black;
+
+// Secondary Color:
+$secondaryColorLight: #f4f4f4;
+$secondaryColorStrong: #c8c8c8;
+$secondaryColorText: black;
+
+// Severity Colors
+$successColorLight: #b7d8b7;
+$successColorMiddle: #34A835;
+$successColorStrong: #107D11;
+$successColorText: white;
+$infoColorLight: #7fbcec;
+$infoColorMiddle: #007ad9;
+$infoColorStrong: #116fbf;
+$infoColorText: white;
+$warnColorLight: #ffe399;
+$warnColorMiddle: #ffba01;
+$warnColorStrong: #ED990B;
+$warnColorText: black;
+$dangerColorLight: #f8b7bd;
+$dangerColorMiddle: #e91224;
+$dangerColorStrong: #c01120;
+$dangerColorText: white;
+
+// Import the global PrimeNG rules
 @import './primeng-rules.scss';
+
+/* Custom Rules */
+
+/* Set each toaster severity to use the light version of that 
+severity color for its background. */
+.ui-toast-message-success {
+    background-color: $successColorLight;
+}
+.ui-toast-message-info {
+    background-color: $infoColorLight;
+}
+.ui-toast-message-warn {
+    background-color: $warnColorLight;
+}
+.ui-toast-message-error {
+    background-color: $dangerColorLight;
+}
+
+/* Specify the color, background, and border for each severity button */
+.ui-button.ui-state-default.ui-button-secondary {
+    background-color: $secondaryColorLight;
+    border:1px solid $secondaryColorLight;
+    color:$secondaryColorText;
+}
+
+.ui-button.ui-state-default.ui-button-secondary:hover {
+    background-color: $secondaryColorStrong;
+}
+
+.ui-button.ui-state-default.ui-button-success {
+    background-color: $successColorMiddle;
+    border:1px solid $successColorMiddle;
+    color:$successColorText;
+}
+
+.ui-button.ui-state-default.ui-button-success:hover {
+    background-color: $successColorStrong;
+}
+
+.ui-button.ui-state-default.ui-button-info {
+    background-color: $infoColorMiddle;
+    border:1px solid $infoColorMiddle;
+    color:$infoColorText;
+}
+
+.ui-button.ui-state-default.ui-button-info:hover {
+    background-color: $infoColorStrong;
+}
+
+.ui-button.ui-state-default.ui-button-warning {
+    background-color: $warnColorMiddle;
+    border:1px solid $warnColorMiddle;
+    color:$warnColorText;
+}
+
+.ui-button.ui-state-default.ui-button-warning:hover {
+    background-color: $warnColorStrong;
+}
+
+.ui-button.ui-state-default.ui-button-danger {
+    background-color: $dangerColorMiddle;
+    border:1px solid $dangerColorMiddle;
+    color:$dangerColorText;
+}
+
+.ui-button.ui-state-default.ui-button-danger:hover {
+    background-color: $dangerColorStrong;
+}
+
+// Set the toaster text & close icon to use the defined toaster text color
+.ui-toast,
+.ui-toast .ui-toast-close-icon {
+    color:$toasterTextColor;
+}
+
+// Disable the underline on the toaster close button
+a.ui-toast-close-icon {
+    text-decoration: none;
+}
+
+/* Specify a width for the icon-only button because it's 
+way too small otherwise. */
+.ui-button-icon-only {
+  width:2em;
+}

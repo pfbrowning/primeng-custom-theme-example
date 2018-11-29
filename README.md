@@ -116,3 +116,27 @@ Now that we understand the layout of the bundled, now-deprecated free themes, th
 ],
 ```
 7. Now that we've got everything set up to modify and re-compile one of the free themes, let's boot up the app and see how it looks.
+
+![Free Theme Compiled Demo](https://raw.githubusercontent.com/pfbrowning/primeng-custom-theme-example/master/src/assets/media/free-theme-compiled-demo.gif)
+
+# 5 - Modifying the free theme to our liking
+Based on our simple demo, we already see a few problems which we can fix with a bit of ingenuity.
+1. There doesn't seem to be any concept of severity colors here.  The severity buttons all use the regular button color and the toaster notifications are all white.  We will add our own SASS variables for each severity color and then apply them to custom rules for each button severity class and toaster severity class.
+2. The header bleeds through beneath the toaster notification.  This will be resolved by the severity background color rules which we're applying as per the previous note.
+3. The primary and secondary buttons are the same color.  We'll resolve this by adding a SASS variable for secondary color and a custom rule to apply this color to the secondary button class.
+4. The toaster's 'close' button is blue and underlined, but we want it to be black and not underlined.  We'll add a custom rule to fix this as well.
+
+It's not immediately clear why the free theme doesn't handle these things properly.  These are pretty glaring oversights, so I'm assuming that these are just new features which were introduced after or around the same time as the deprecation of the free themes.  With this in mind we can assume that we'll probably have to make similar adjustments for new features in the future.
+
+In addition I'm going to change some of the existing variables by borrowing them from other free themes and setting a few custom values myself.
+
+The updated theme file is too long to include in a code block, so I'm linking it [here](https://github.com/pfbrowning/primeng-custom-theme-example/blob/master/src/primeng-theme/theme.scss).
+
+Now that we've got our custom theme put together, let's compiled it and run our demo app again:
+![Custom Theme Demo](https://raw.githubusercontent.com/pfbrowning/primeng-custom-theme-example/master/src/assets/media/custom-theme-demo.gif)
+
+This is much better than before.  It's not perfect, but it's a good starting point.  From here you can customize and re-compile the theme to your heart's content until it's perfect for your needs.
+
+TODO update to account for SCSS projects
+TODO general proofreading & editing
+TODO move markdown to Wordpress
