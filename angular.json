@@ -24,7 +24,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/primeng-theme/theme.min.css",
+              "src/primeng-theme/theme.scss",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/primeng.min.css"
             ],

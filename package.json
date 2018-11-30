@@ -7,11 +7,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "premakecss": "node-sass src/primeng-theme/theme.scss -o src/primeng-theme/",
-    "makecss": "postcss src/primeng-theme/theme.css --use autoprefixer -d src/primeng-theme/",
-    "prebuild:css": "npm run makecss",
-    "build:css": "postcss src/primeng-theme/theme.css --use cssnano > src/primeng-theme/theme.min.css"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
