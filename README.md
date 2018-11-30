@@ -1,17 +1,17 @@
-# Creating a custom PrimeNG SCSS theme
+# Creating A Custom PrimeNG SCSS Theme
 
-PrimeNG is a capable open source Angular UI library which provides a large number of useful components.  There are plenty of premium themes available for PrimeNG, some of which do look rather nice.  They also offer a commercial theme designer product.  However, for those of us who wish to take the free, open-source route, the options are limited, which is ironic considering that the library itself is under the MIT license.  At the time of writing there are only a handful of free themes offered with PrimeNG, which themselves are really just different variations on the same two core free themes ("Nova" and "Luna").  They used to have many more free themes, but they were recently deprecated (although they're still available on Github and in the NPM package).
+PrimeNG is a capable open source Angular UI library which provides a large number of useful components.  There are plenty of premium themes available for PrimeNG, some of which do look rather nice.  They also offer a commercial theme designer product.  However, for those of us who wish to take the free, open-source route, the options are limited, which is ironic considering that the library itself is under the MIT license.  At the time of writing there are only a handful of free themes offered with PrimeNG, which themselves are really just different variations on the same two core free themes ("Nova" and "Luna").  They used to have many more free themes, but these were recently deprecated (although they're still available on Github and in the NPM package).
 
 Writing your own theme via SCSS is not difficult once you figure out how it works, but at the time of writing there's no official documentation whatsoever on the subject and not much in the way of unofficial documentation.  I found [this](https://medium.com/@OlegVaraksin/simple-ways-to-create-a-new-theme-in-primeng-12d9bbe3fc60) guide to be very helpful, but a lot has changed since that post was written.  1 1/2 years is a long time in the world of cutting edge web development.
 
-This tutorial uses Angular 7 and assumes that you're using at least Angular 6.  You can probably follow along with earlier versions of Angular if you haven't upgraded yet: YMMV.
+This tutorial uses Angular 7 and assumes that you're using at least Angular 6.  You might be able to follow along with earlier versions of Angular if you haven't upgraded yet: YMMV.
 
 # 1 - Create Your App & Import PrimeNG
-First we have to handle the boring boilerplate of creating our example app and adding PrimeNG to it.  If you already have a working Angular app with PrimeNG added, then feel free to skip to step 3.
+First we have to handle the boring boilerplate of creating our example app and adding PrimeNG.  If you already have a working Angular app with PrimeNG added, then feel free to skip to step 3.
 
-First create your app with `ng new primeng-custom-theme-example`.  If you're using Angular CLI 7, it will prompt you about routing and stylesheets.  This tutorial will work regardless of which you select.  Angular CLI will compile SCSS files for you when you specify them as app styles or component styles even if you didn't create your app with the SCSS option.  In order to demonstrate this I'm going to select CSS stylesheets.
+First create your app with `ng new primeng-custom-theme-example`.  If you're using Angular CLI 7, it will prompt you about routing and stylesheets.  This tutorial will work regardless of which you select.  Angular CLI will compile SCSS files for you when you specify them as app styles (in angular.json) or component styles even if you didn't create your app with the SCSS option.  In order to demonstrate this I'm going to select CSS stylesheets.
 
-Install PrimeNG with `npm i primeng primeicons --save`.  Add references to PrimeNG's primeicons.css, nova-light theme.css, and primeng.min.css within the 'styles' array in your Angular.json.  Adding the nova-light theme file is a temporary measure just so that the app displays properly until we replace it with our own theme stylesheet.
+Install PrimeNG with `npm i primeng primeicons --save`.  Add references to PrimeNG's primeicons.css, nova-light theme.css, and primeng.min.css within the 'styles' array in your angular.json.  Adding the nova-light theme file is a temporary measure just so that the app displays properly until we replace it with our own theme stylesheet.
 ```json
 "styles": [
     "src/styles.css",
@@ -21,7 +21,7 @@ Install PrimeNG with `npm i primeng primeicons --save`.  Add references to Prime
 ],
 ```
 
-# 2 - Add a few example components
+# 2 - Add A Few Example Components
 For the purpose of checking out how each component looks at first with the default style and then with our own style by comparison, we'll add a few basic PrimeNG components to our App Component.  We don't need to wire up any specific functionality: we just want to see how they look.
 
 First we'll import the BrowserAnimationsModule (required for any PrimeNG component), ButtonModule, FileUploadModule, and ToastModule, and then configure a provider for MessageService (used for the toaster notification component).  Our app.module should look like this:
@@ -97,7 +97,7 @@ Now that we understand the layout of the bundled, now-deprecated free themes, th
 
 1. Create a new folder entitled 'primeng-theme' within 'src/assets'
 2. Copy the Cruze variables file ('cruze/theme.scss') and the global PrimeNG rules file ('_theme.scss') within 'node_modules/primeng/resources/themes' to our new 'src/primeng-theme' folder.  To clarify the difference between the two, rename '_theme.scss' to 'primeng-rules.scss'.  Update the corresponding import at the bottom of "theme.scss" accordingly so that it reads "@import './primeng-rules.scss';".
-3. Include the imported theme by replacing the nova-light 'theme.css' with our newly imported 'theme.scss' in the styles array within Angular.json.
+3. Include the imported theme by replacing the nova-light 'theme.css' with our newly imported 'theme.scss' in the styles array within angular.json.
 In the olden days we would have had to manually recompile our theme with each change, but luckily Angular CLI handles that for us so we don't have to
 worry about it.
 ```json
@@ -108,11 +108,11 @@ worry about it.
   "node_modules/primeng/resources/primeng.min.css"
 ],
 ```
-4. Now that we've got everything set up modify our imported free theme, let's boot up the app and see how it looks as-is before we start changing things.
+4. Now that we've got everything set up so that we can modify our imported free theme and let Angular CLI compile it for us behind-the-scenes, let's boot up the app and see how it looks as-is before we start changing things.
 
 ![Free Theme Compiled Demo](https://raw.githubusercontent.com/pfbrowning/primeng-custom-theme-example/master/src/assets/media/free-theme-compiled-demo.gif)
 
-# 5 - Modifying the free theme to our liking
+# 5 - Modifying the Free Theme To Our Liking
 Based on our simple demo, we already see a few problems which we can fix with a bit of ingenuity.
 1. There doesn't seem to be any concept of severity colors here.  The severity buttons all use the regular button color and the toaster notifications are all white.  We will add our own SCSS variables for each severity color and then apply them to custom rules for each button severity class and toaster severity class.
 2. The header bleeds through beneath the toaster notification.  This will be resolved by the severity background color rules which we're applying as per the previous note.
@@ -121,15 +121,13 @@ Based on our simple demo, we already see a few problems which we can fix with a 
 
 It's not immediately clear why the free theme doesn't handle these things properly.  These are pretty glaring oversights, so I'm assuming that these are just new features which were introduced after or around the same time as the deprecation of the free themes.  With this in mind we can assume that we'll probably have to make similar adjustments for new features in the future.
 
-In addition I'm going to change some of the existing variables by borrowing them from other free themes and setting a few custom values myself.
+In addition I'm going to change some of the existing variables by borrowing a few from Nova Light and setting a few custom values myself.
 
 The updated theme file is too long to include in a code block, so I'm linking it [here](https://github.com/pfbrowning/primeng-custom-theme-example/blob/master/src/primeng-theme/theme.scss).
 
-Now that we've got our custom theme put together, let's compiled it and run our demo app again:
+Now that we've got our custom theme put together, let's run our demo app again:
 ![Custom Theme Demo](https://raw.githubusercontent.com/pfbrowning/primeng-custom-theme-example/master/src/assets/media/custom-theme-demo.gif)
 
-This is much better than before.  It's not perfect, but it's a good starting point.  From here you can customize and re-compile the theme to your heart's content until it's perfect for your needs.
+This is much better than before.  From here you can customize and re-compile the theme to your heart's content until it's perfect for your needs.
 
-TODO update to account for SCSS projects
-TODO general proofreading & editing
 TODO move markdown to Wordpress
